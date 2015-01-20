@@ -18,7 +18,7 @@ do
             ;;
         m )
             # Mine
-            users='-u harrigan'
+            users="-u $USER"
             ;;
         g )
             # Gres GPUs
