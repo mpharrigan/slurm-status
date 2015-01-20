@@ -1,0 +1,3 @@
+alias sinfo='sinfo --format="%9P %.5a   %.10l   %7t %.4D %.4c %.15O %N"'
+alias sidle='sinfo --states="idle,mixed" --sort="t"'
+export SLURM_TIME_FORMAT="relative"
