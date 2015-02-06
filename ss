@@ -5,6 +5,10 @@ users=''
 addtl=''
 partition=''
 
+#        partition   user    time-limit     job-state   cpus
+#        id      name    time-left   start-time    nodes      reason
+format='%.7i %9P %9j  %9u %.13L %.13l %.16S   %.2t %.5D %.5C  %15R'
+
 while getopts "prmgch" opt
 do
     case $opt in
@@ -21,8 +25,8 @@ do
             users="-u $USER"
             ;;
         g )
-            # Gres GPUs
-            addtl='%b'
+            # Show gres column (gpus)
+            format="$format %b"
             ;;
         c )
             # GPU partition
@@ -43,5 +47,5 @@ do
     esac
 done
 
-squeue --format="%.7i %9P %9j  %9u %.13L %.13l %.16S   %.2t %.5D %.5C  %15R $addtl" --sort="t,-S" \
+squeue --format="$format" --sort="t,-S" \
         --states=$states $users $partition
