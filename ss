@@ -29,7 +29,7 @@ do
             partition='--partition=gpu'
             ;;
         h )
-            echo "Usage: ss [prmg]"
+            echo "Usage: ss -[prmgc]"
             echo ""
             echo -e "\t -p    pending"
             echo -e "\t -r    running"
