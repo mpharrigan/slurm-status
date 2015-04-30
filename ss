@@ -9,7 +9,7 @@ partition=''
 #        id      name    time-left   start-time    nodes      reason
 format='%.7i %9P %9j  %9u %.13L %.13l %.16S   %.2t %.5D %.5C  %15R'
 
-while getopts "prmgch" opt
+while getopts "prmgcht" opt
 do
     case $opt in
         p )
@@ -32,14 +32,19 @@ do
             # GPU partition
             partition='--partition=gpu'
             ;;
+        t )
+            # Don't show header
+            addtl="$addtl --noheader"
+            ;;
         h )
-            echo "Usage: ss -[prmgc]"
+            echo "Usage: ss -[prmgct]"
             echo ""
             echo -e "\t -p    pending"
             echo -e "\t -r    running"
             echo -e "\t -m    my jobs"
             echo -e "\t -g    show gres column"
             echo -e "\t -c    gpu partition"
+            echo -e "\t -t    suppress header"
             echo -e "\t -h    this message"
             echo ""
             exit 0;
@@ -48,4 +53,4 @@ do
 done
 
 squeue --format="$format" --sort="t,-S" \
-        --states=$states $users $partition
+        --states=$states $users $partition $addtl
