@@ -7,7 +7,7 @@ partition=''
 
 #        partition   user    time-limit     job-state   cpus
 #        id      name    time-left   start-time    nodes      reason
-format='%.7i %9P %9j  %9u %.13L %.13l %.16S   %.2t %.5D %.5C  %15R'
+format='%i,%P,%j,%u,%L,%l,%S,%t,%D,%C,%R'
 
 while getopts "prmgch" opt
 do
@@ -26,7 +26,7 @@ do
             ;;
         g )
             # Show gres column (gpus)
-            format="$format %b"
+            format="$format,%b"
             ;;
         c )
             # GPU partition
@@ -48,4 +48,4 @@ do
 done
 
 squeue --format="$format" --sort="t,-S" \
-        --states=$states $users $partition
+        --states=$states $users $partition | column -t -s ','
