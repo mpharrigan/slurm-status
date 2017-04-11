@@ -1,5 +1,9 @@
 #!/bin/bash
 
+set -o errexit -o noclobber -o nounset -o pipefail
+params="$(getopt -o prmgh -l pending,running,mine,gres,help --name "$0" -- "$@")"
+eval set -- "$params"
+
 states='all'
 users=''
 addtl=''
@@ -9,40 +13,48 @@ partition=''
 #        id      name    time-left   start-time    nodes      reason
 format='%i;%P;%j;%u;%L;%l;%S;%t;%D;%C;%R'
 
-while getopts "prmgch" opt
+while true
 do
-    case $opt in
-        p )
+    case "$1" in
+        -p|--pending )
             #Pending
             states='PD'
+            shift
             ;;
-        r )
+        -r|--running )
             # Running
             states='R'
+            shift
             ;;
-        m )
+        -m|--mine )
             # Mine
             users="-u $USER"
+            shift
             ;;
-        g )
+        -g|--gres )
             # Show gres column (gpus)
             format="$format;%b"
+            shift
             ;;
-        c )
-            # GPU partition
-            partition='--partition=gpu'
+        -h|--help )
+            echo "Usage: ss [options]"
+            echo ""
+            echo -e "Options"
+            echo -e "\t -p, --pending    pending"
+            echo -e "\t -r, --running    running"
+            echo -e "\t -m, --mine       my jobs"
+            echo -e "\t -g, --gres       show gres (GPU) column"
+            echo -e "\t -h, --help       this message"
+            echo ""
+            exit 1
             ;;
-        h )
-            echo "Usage: ss -[prmgc]"
-            echo ""
-            echo -e "\t -p    pending"
-            echo -e "\t -r    running"
-            echo -e "\t -m    my jobs"
-            echo -e "\t -g    show gres column"
-            echo -e "\t -c    gpu partition"
-            echo -e "\t -h    this message"
-            echo ""
-            exit 0;
+        -- )
+            shift
+            break
+            ;;
+        * )
+            echo "Unknown option: $1" >&2
+            exit 2
             ;;
     esac
 done
