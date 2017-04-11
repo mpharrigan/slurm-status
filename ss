@@ -11,7 +11,10 @@ makecolumn=1
 #        partition   user    time-limit     job-state   cpus
 #        id      name    time-left   start-time    nodes      reason
 format='%i;%P;%j;%u;%L;%l;%S;%t;%D;%C;%R'
-fixfmt='%10.10s %10.10s %10.10s %10.10s %10.10s %10.10s %10.10s %10.10s %10.10s %10.10s %10.10s'
+
+#              partition          user        time-limit      job-state     cpus
+#         id             name           time-left      start-time     nodes         reason
+fixfmt='%10.10s %10.10s %10.10s %10.10s %12.12s %12.12s %12.12s %5.5s %5.5s %5.5s %12.12s'
 fixarg='$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11'
 
 while true
