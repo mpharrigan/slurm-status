@@ -48,7 +48,7 @@ do
             shift
             ;;
         -h|--help )
-            echo "Usage: ss [options]"
+            echo "Usage: ss [options] -- [squeue options]"
             echo ""
             echo -e "Options"
             echo -e "\t -p, --pending      pending"
@@ -77,8 +77,8 @@ done
 
 if [ $makecolumn -eq 1 ]
 then
-    squeue --format="$format" --sort="t,-S" --states=$states $users | column -t -s ';'
+    squeue --format="$format" --sort="t,-S" --states=$states $users $@ | column -t -s ';'
 else
     fixfmt="\"$fixfmt\\n\""
-    squeue --format="$format" --sort="t,-S" --states=$states $users | awk -F ';' "{printf($fixfmt, $fixarg)}"
+    squeue --format="$format" --sort="t,-S" --states=$states $users $@ | awk -F ';' "{printf($fixfmt, $fixarg)}"
 fi
